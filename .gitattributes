@@ -1,1 +1,2 @@
 iac/.terraform/providers/registry.terraform.io/hashicorp/aws/* filter=lfs diff=lfs merge=lfs -text
+iac/.terraform/providers/registry.terraform.io/hashicorp/aws/5.42.0/darwin_arm64/terraform-provider-aws_v5.42.0_x5 filter=lfs diff=lfs merge=lfs -text
