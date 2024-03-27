@@ -1,0 +1,352 @@
+git clone https://github.com/Nelly-98/aws-kubernetes-terraform-wordpress.git
+aws eks --region eu-west-3 update-kubeconfig --name eksctl-webservicesClusterEKS-cluster
+aws eks --region eu-west-3 update-kubeconfig --name webservicesClusterEKS-cluster
+aws eks --region eu-west-3 update-kubeconfig --name webservicesClusterEKS
+cd nginx
+docker build -t nginx
+docker build -t nginx .
+cd ../wordpress
+docker build -t wordpress .
+docker run -p 8080:80 nginx
+cd ../nginx
+docker run -p 8080:80 nginx
+cd ../wordpress
+docker run -p 8081:80 wordpress
+docker network create reseau
+docker run --name wordpress --network reseau -d wordpress
+docker run -p 8080:80 --network reseau -d nginx\
+
+curl -I localhost:8081
+curl -I localhost:8080
+docker network inspect
+docker build -t wordpress .
+docker run --name wordpress-container -p 8081:80 -d wordpress
+docker ls
+docker down
+docker-compose down
+curl -I localhost:8081
+curl -I localhost:8080
+docker restart nginx
+docker ps
+cd ../nginx
+docker ps
+docker build -t nginx .
+docker run --name nginx-container -p 8080:80 -d nginx
+docker ps -a
+docker stop 3cca15e6d857
+docker rm 3cca15e6d857
+docker ps -a
+docker run --name nginx-container -p 8080:80 -d nginx
+docker ps -a
+docker stop a080c96e98cc
+docker rm a080c96e98cc
+docker ps -a
+docker run --name nginx-container -p 8080:80 -d nginx
+docker ps -a
+docker logs nginx-container
+docker restart nginx-container
+docker ps -a
+docker logs nginx-container
+docker stop 05b807a65945
+docker rm 05b807a65945
+docker run --name nginx-container -p 8080:80 -d nginx
+docker build -t nginx .
+docker run --name nginx-container -p 8080:80 -d nginx
+docker ps-a
+docker ps -a
+docker stop 6699b2104497
+docker rm 6699b2104497
+docker ps -a
+docker build -t nginx .
+docker run --name nginx-container -p 8080:80 -d nginx
+docker ps -a
+docker logs 45cd3f63eff0
+docker network connect reseau nginx-container
+docker network connect reseau wordpress-container
+docker restart nginx-container
+docker ps -a
+curl -I localhost:8080
+docker logs 45cd3f63eff0
+curl -I localhost:8080
+curl -I localhost:8081
+docker restart nginx-container
+curl -I localhost:8080
+docker exec nginx-container nginx -s reload\
+
+curl -I localhost:8080
+docker ps -a
+docker stop 1e9718459770
+docker stop 3043b7ee9ad5
+docker stop dd477922eefc
+docker stop d5d939735144
+docker stop 091779f44d69
+docker ps -a
+docker exec nginx-container nginx -s reload\
+
+curl -I localhost:8080
+docker logs 45cd3f63eff0
+curl -I http://localhost:8080
+docker exec nginx-container nginx -s reload\
+
+docker restart nginx-container
+curl -I http://localhost:8080
+docker run --name nginx-container -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro -p 8080:80 -d nginx\
+
+docker ps -a
+docker stop 45cd3f63eff0
+docker rm 45cd3f63eff0
+docker run --name nginx-container -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro -p 8080:80 -d nginx\
+
+docker ps -a
+curl -I http://localhost:8080
+docker rm nginx-container\
+
+docker ps -a
+docker build -t nginx .
+docker run --name nginx-container -p 8080:80 -d nginx
+docker network connect reseau nginx-container
+docker ps -a
+curl -I http://localhost:8080
+docker exec nginx-container nginx -s reload\
+
+docker restart nginx-container
+docker ps -a
+curl -I http://localhost:8080
+docker logs 96641e876198
+cd ../..
+kubectl apply -f k8s/dev/mariadb/
+kubectl apply -f k8s/dev/wordpress/ -n dev
+kubectl create namespace dev\
+
+kubectl apply -f k8s/dev/wordpress/ 
+kubectl apply -f k8s/dev/mariadb/
+kubectl apply -f k8s/dev/ingress.yaml
+kubectl get deployments -n dev\
+
+kubectl get services -n dev\
+
+kubectl apply -f k8s/dev/mariadb/service.yaml -n dev
+kubectl apply -f k8s/dev/wordpress/service.yaml -n dev
+kubectl get services -n dev\
+
+kubectl get services -n dev
+kubectl get pods -n dev
+kubectl exec -it wordpress-869867b694-k6xtd -n dev -- bash\
+
+kubectl exec -it mariadb-6cf55464cc-fcl8v -n dev -- bash\
+
+aws configure
+eksctl create cluster --name webservicesClusterEKS --version 1.21 --region eu-west-3 --nodegroup-name kubeNoeuds --node-type t3.medium --nodes 3
+brew tap weaveworks/tap
+brew install weaveworks/tap/eksctl
+eksctl version\
+
+eksctl create cluster --name webservicesClusterEKS --version 1.21 --region eu-west-3 --nodegroup-name kubeNoeuds --node-type t3.medium --nodes 3
+eksctl create cluster --name webservicesClusterEKS --version 1.23 --region eu-west-3 --nodegroup-name kubeNoeuds --node-type t3.medium --nodes 3
+kubectl apply -f k8s/dev/mariadb/ -n dev
+kubectl create namespace dev
+kubectl apply -f k8s/dev/mariadb/ -n dev
+kubectl apply -f k8s/dev/wordpress/ -n dev
+kubectl get services -n dev
+kubectl apply -f k8s/dev/ingress.yaml -n dev
+kubectl get services -n dev\
+
+kubectl get deployments -n dev\
+
+kubectl create namespace prod
+kubectl get svc -n prod
+kubectl apply -f k8s/prod/wordpress/ -n prod
+kubectl apply -f k8s/prod/mariadb/ -n prod
+kubectl get svc -n prod
+cd k8s
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.3.1 --set installCRDs=true\
+
+cd ../
+kubectl apply -f k8s/prod/cert-manager -n prod
+kubectl apply -f k8s/prod/ingress.yaml -n prod
+kubectl get svc -n prod
+aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 885801475464.dkr.ecr.eu-west-3.amazonaws.com/wordpress1\
+
+docker ps -a
+docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/wordpress1:latest
+aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 885801475464.dkr.ecr.eu-west-3.amazonaws.com
+docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/wordpress:latest
+docker images
+docker ps -a
+docker images
+docker ps -a
+docker tag wordpress:latest 885801475464.dkr.ecr.eu-west-3.amazonaws.com/wordpress:latest\
+
+docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/wordpress:latest\
+
+docker-compose down
+ls -a
+cd ../
+cd ../
+ls -a
+cd Documents/aws-kubernetes-terraform-wordpress
+cd iac
+terraform fmt
+cd modules/ecr
+terraform fmt
+cd ../eks
+terraform fmt
+cd ../rds
+terraform fmt
+cd ../sg
+terraform fmt
+cd ../vpc
+terraform fmt
+cd ../
+cd ../
+terraform validate
+terraform init
+terraform init
+aws s3api create-bucket --bucket projet-tf-backend-state --region eu-west-3 --create-bucket-configuration LocationConstraint=eu-west-3\
+
+terraform init
+terraform validate
+terraform validate
+terraform validate
+terraform validate
+terraform init
+terraform validate
+terraform validate
+terraform validate
+terraform plan
+terraform apply --auto-approve
+aws rds describe-db-engine-versions --engine mysql --query "DBEngineVersions[].EngineVersion"\
+
+terraform apply --auto-approve
+terraform plan
+terraform apply --auto-approve
+terraform apply --auto-approve
+cd ../
+ls -a
+git add .
+git commit -m "first commit project"
+git push
+git lfs install\
+
+brew install git-lfs
+git lfs install\
+
+git lfs track "iac/.terraform/providers/registry.terraform.io/hashicorp/aws/*"\
+
+git add .
+git commit -m "Fix large file issue with Git LFS"
+git push
+git lfs track "iac/.terraform/providers/registry.terraform.io/hashicorp/aws/5.42.0/darwin_arm64/terraform-provider-aws_v5.42.0_x5"\
+
+git add .
+git commit -m "Fix large file issue with Git LFS"
+git push
+git filter-branch --tree-filter 'rm -rf iac/.terraform/providers/registry.terraform.io/hashicorp/aws/5.42.0/darwin_arm64/terraform-provider-aws_v5.42.0_x5' HEAD\
+
+git push
+kubectl get services -n dev\
+
+kubectl get services -n prod
+ls
+cd docker/wordpress
+ls
+docker ps
+docker ps
+docker run wordpress
+docker ps
+docker ps -a
+docker run wordpress-container
+docker build -t wordpress-container
+docker build -t wordpress-container .
+docker run wordpress-container
+docker ps -a
+docker build -t wordpress-poei .
+docker run wordpress-poei
+docker ps -a
+docker rm 86606842625c
+docker rm e36d2d37f9c5
+docker rm 5b7532d76525
+docker rm 3f0a79dcb0fc
+docker rm 1e9718459770
+docker ps -a
+docker build -t wordpress .
+docker run -p 8081:80 wordpress-container
+docker ps -a
+docker rm 358e6f0fcb97
+docker rm a29c6fd681c9
+docker ps -a
+docker build -t wordpress-container .
+docker ps -a
+docker run -p 8081:80 wordpress-container
+docker ps -a
+docker rm 3c17afedda8b
+docker build -t wordpress-container .
+docker run -p 8082:80 wordpress-container
+docker ps -a
+docker rm e1bab145ceb9
+docker build -t wordpress-container .
+docker run -p 8081:80 wordpress-container
+docker ps -a
+docker rm 96641e876198
+cd docker/nginx
+docker build -t nginx-container .
+docker run -p 8080:80 nginx-container
+docker ps -a
+docker ps
+docker ps -a
+docker rm aeb297bd63d1
+docker build -t nginx-container .
+docker run -p 8080:80 nginx-container
+docker ps
+docker run --name wordpress-container --network reseau -d wordpress-container
+docker run --name nginx-container --network reseau -d nginx-container
+docker ps
+docker rm c80f5c07e104
+docker stop c80f5c07e104
+docker rm c80f5c07e104
+docker ps
+cd ../
+aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 885801475464.dkr.ecr.eu-west-3.amazonaws.com
+docker tag wordpress-container:latest 885801475464.dkr.ecr.eu-west-3.amazonaws.com/wordpress-container:latest
+docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/wordpress-container:latest
+docker tag wordpress-container:latest 885801475464.dkr.ecr.eu-west-3.amazonaws.com/poei-wordpress:latest
+docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/wordpress-container:latest
+docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/poei-wordpress:latest
+docker tag nginx-container:latest 885801475464.dkr.ecr.eu-west-3.amazonaws.com/poei-nginx:latest
+docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/poei-nginx:latest
+git add .
+git commit -m "buildspec modified"
+git push
+git status
+cd ../
+git commit -m "buildspec modified"
+git add ci-cd/codebuild
+git commit -m "buildspec modified"
+git push
+git add ci-cd/codebuild
+git commit -m "buildspec modified"
+git push
+git add ci-cd/codebuild
+git commit -m "buildspec modified"
+git push
+git add ci-cd/codebuild
+git commit -m "buildspec modified"
+git push
+git add ci-cd/codebuild
+git status
+git add ci-cd/codebuild
+git add ci-cd/codebuild
+git status
+git commit -m "buildspec modified"
+git push
+git add ci-cd/codebuild
+git commit -m "buildspec modified"
+git push
+cd iac
+terraform plan
+terraform init
+terraform validate
+terraform apply --auto-approve
+terraform apply --auto-approve

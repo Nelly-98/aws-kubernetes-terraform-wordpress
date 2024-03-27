@@ -3,7 +3,7 @@ Resources:
   MyPipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
-      RoleArn: arn:aws:iam::123456789012:role/service-role/AWSCodePipelineServiceRole
+      RoleArn: arn:aws:iam::885801475464:role/service-role/AWSCodePipelineServiceRole
       ArtifactStore:
         Type: S3
         Location: my-codepipeline-artifacts-bucket
