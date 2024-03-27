@@ -125,5 +125,7 @@ module "eks" {
   }
 }
 
-
-
+module "codepipeline" {
+  source       = "./modules/codepipeline"
+  cluster_name = module.eks.cluster_name
+}

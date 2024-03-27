@@ -1,0 +1,43 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Installing Terraform and kubectl..."
+      - wget https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
+      - unzip terraform_0.15.5_linux_amd64.zip
+      - mv terraform /usr/local/bin/
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  pre_build:
+    commands:
+      - echo "Initializing Terraform..."
+      - cd iac/
+      - terraform init
+      - echo "Planning Terraform deployment..."
+      - terraform plan
+      - echo "Logging in to Amazon ECR..."
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - cd ..
+  build:
+    commands:
+      - echo "Applying Terraform configuration..."
+      - cd iac/
+      - terraform apply -auto-approve
+      - echo "Terraform apply complete."
+      - cd ..
+      - echo "Building and pushing Docker images..."
+      - |
+        docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/nginx:$IMAGE_TAG ./docker/nginx/
+        docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/nginx:$IMAGE_TAG
+      - echo "Docker images built and pushed successfully."
+  post_build:
+    commands:
+      - echo "Configuring kubectl for EKS cluster..."
+      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name webservicesClusterEKS
+      - echo "Deploying Kubernetes manifests..."
+      - kubectl apply -f k8s/prod/ -n prod
+      - echo "Deployment to Kubernetes completed."
+artifacts:
+  files:
+    - iac/terraform.tfstate
