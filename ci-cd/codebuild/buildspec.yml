@@ -9,17 +9,12 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      #- docker pull poei-wordpress:latest
-      #- docker build -t poei-wordpress .
-
-      #- docker build -t wordpress-container ./docker/wordpress/
-      #- docker tag wordpress-container:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/poei-wordprss:latest
+      
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      #- docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/poei-wordpress:latest
-
+      
 artifacts:
   files:
     - '**/*'
