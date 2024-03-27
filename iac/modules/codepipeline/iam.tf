@@ -63,30 +63,16 @@ resource "aws_iam_role_policy_attachment" "codepipeline-policy-attachment" {
 }
 
 data "aws_iam_policy_document" "codebuild-policy-document" {
-  statement {
-    actions   = ["logs:*"]
+ statement {
+    actions   = ["logs:*", "iam:GetRole"]
     resources = ["*"]
     effect    = "Allow"
   }
-
   statement {
-    actions   = ["ecr:*"]
+    actions   = ["ecr:*", "eks:*", "s3:*", "secretsmanager:GetSecretValue"]
     resources = ["*"]
     effect    = "Allow"
   }
-
-  statement {
-    actions   = ["eks:*"]
-    resources = ["*"]
-    effect    = "Allow"
-  }
-
-  statement {
-      actions = ["secretsmanager:GetSecretValue"]
-      resources= ["*"]
-      effect = "Allow"
-    }
-  
 
   statement {
     actions = ["s3:*"]
@@ -97,6 +83,23 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
     ]
     effect = "Allow"
   }
+  statement {
+    actions = [
+      "rds:DescribeDBInstances",
+      "rds:DescribeDBClusters",
+      "rds:DescribeDBSubnetGroups",
+      "rds:DescribeDBSecurityGroups",
+      "rds:DescribeDBParameterGroups",
+      "rds:DescribeDBClusterParameterGroups",
+      "rds:DescribeDBSnapshots",
+      "rds:DescribeDBClusterSnapshots",
+      "rds:CreateDBSnapshot",
+      "rds:CreateDBClusterSnapshot"
+    ]
+    resources = ["*"]
+    effect = "Allow"
+  }
+
 }
 
 resource "aws_iam_policy" "codebuild-policy" {
