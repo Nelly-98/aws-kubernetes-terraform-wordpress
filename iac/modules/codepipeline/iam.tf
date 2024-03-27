@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "codepipeline-policy-document" {
   statement {
     actions = ["codebuild:*"]
     resources = [
-      "arn:aws:codebuild:${var.region}:${local.account_id}:project/${aws_codebuild_project.codebuild_project_stage.name}",
+       "arn:aws:codebuild:eu-west-3:885801475464:project/build"
     ]
     effect = "Allow"
   }
@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "codepipeline-policy-document" {
   statement {
     actions = ["codestar-connections:UseConnection", "codestar-connections:DescribeConnection"]
     resources = [
-    "arn:aws:codestar-connections:${var.region}:${local.account_id}:connection/*"]
+    "arn:aws:codestar-connections:eu-west-3:885801475464:connection/*"]
     effect = "Allow"
   }
 
@@ -30,6 +30,15 @@ data "aws_iam_policy_document" "codepipeline-policy-document" {
     actions   = ["s3:*"]
     resources = ["${aws_s3_bucket.s3-bucket-backend.arn}/*"]
     effect    = "Allow"
+  }
+
+  # Ajout pour permettre les actions sur KMS
+  statement {
+    actions = ["kms:*"]
+    resources = [
+      "arn:aws:kms:eu-west-3:885801475464:key/cb8d0ea5-7509-4389-9f0b-52bcc63ad090",
+    ]
+    effect = "Allow"
   }
 }
 
@@ -64,12 +73,12 @@ resource "aws_iam_role_policy_attachment" "codepipeline-policy-attachment" {
 
 data "aws_iam_policy_document" "codebuild-policy-document" {
  statement {
-    actions   = ["logs:*", "iam:GetRole"]
+    actions   = ["logs:*", "iam:*"]
     resources = ["*"]
     effect    = "Allow"
   }
   statement {
-    actions   = ["ecr:*", "eks:*", "s3:*", "secretsmanager:GetSecretValue"]
+    actions   = ["ecr:*", "eks:*", "s3:*", "rds:*", "secretsmanager:GetSecretValue"]
     resources = ["*"]
     effect    = "Allow"
   }
@@ -81,22 +90,6 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
       "arn:aws:s3:::projet-tf-backend-state",
       "arn:aws:s3:::projet-tf-backend-state/*"
     ]
-    effect = "Allow"
-  }
-  statement {
-    actions = [
-      "rds:DescribeDBInstances",
-      "rds:DescribeDBClusters",
-      "rds:DescribeDBSubnetGroups",
-      "rds:DescribeDBSecurityGroups",
-      "rds:DescribeDBParameterGroups",
-      "rds:DescribeDBClusterParameterGroups",
-      "rds:DescribeDBSnapshots",
-      "rds:DescribeDBClusterSnapshots",
-      "rds:CreateDBSnapshot",
-      "rds:CreateDBClusterSnapshot"
-    ]
-    resources = ["*"]
     effect = "Allow"
   }
 
