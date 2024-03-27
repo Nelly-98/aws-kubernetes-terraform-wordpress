@@ -82,9 +82,18 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
   }
 
   statement {
+      actions = ["secretsmanager:GetSecretValue"]
+      resources= ["*"]
+      effect = "Allow"
+    }
+  
+
+  statement {
     actions = ["s3:*"]
     resources = [
       "${aws_s3_bucket.s3-bucket-backend.arn}/*",
+      "arn:aws:s3:::projet-tf-backend-state",
+      "arn:aws:s3:::projet-tf-backend-state/*"
     ]
     effect = "Allow"
   }

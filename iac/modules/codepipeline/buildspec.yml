@@ -4,9 +4,10 @@ phases:
   install:
     commands:
       - echo "Installing Terraform and kubectl..."
-      - wget https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
-      - unzip terraform_0.15.5_linux_amd64.zip
+      - wget https://releases.hashicorp.com/terraform/1.7.5/terraform_1.7.5_linux_amd64.zip
+      - unzip terraform_1.7.5_linux_amd64.zip
       - mv terraform /usr/local/bin/
+      - terraform version
       
   pre_build:
     commands:
@@ -15,12 +16,26 @@ phases:
       - terraform init
       - echo "Validate Terraform deployment..."
       - terraform validate
+      - echo "Planning Terraform deployment..."
+      - terraform plan
+      - echo "Logging in to Amazon ECR..."
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - cd ..
       
   build:
     commands:
       - echo "Applying Terraform configuration..."
+      - cd iac/
+      - terraform apply -auto-approve
+      - echo "Terraform apply complete."
+      - cd ..
+      - echo "Building and pushing Docker images..."
       
   post_build:
     commands:
       - echo "Configuring kubectl for EKS cluster..."
+      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name webservicesClusterEKS
+      - echo "Deploying Kubernetes manifests..."
+      - kubectl apply -f k8s/prod/ -n prod
+      - echo "Deployment to Kubernetes completed."
      
