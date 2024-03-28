@@ -102,12 +102,6 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
     effect = "Allow"
   }
 
-   # Ajout pour permettre les actions sur KMS
-  statement {
-    actions = ["kms:*"]
-    resources = ["*"]
-    effect = "Allow"
-  }
 }
 
 resource "aws_iam_policy" "codebuild-policy" {

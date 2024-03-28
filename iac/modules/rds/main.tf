@@ -10,7 +10,7 @@ resource "aws_db_instance" "default" {
   db_subnet_group_name   = var.subnet_group_name
   vpc_security_group_ids = var.vpc_security_group_ids
   skip_final_snapshot    = true # Pour éviter de créer un snapshot final à la suppression
-
+  storage_encrypted   = true
   tags = {
     Name = "${var.project_name}-rds"
   }
