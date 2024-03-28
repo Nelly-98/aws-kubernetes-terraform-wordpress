@@ -19,9 +19,9 @@ phases:
       - echo "Planning Terraform deployment..."
       - terraform plan
       - echo "Logging in to Amazon ECR..."
-      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - $(aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 885801475464.dkr.ecr.eu-west-3.amazonaws.com/wordpress1\)
       - cd ..
-      
+     
   build:
     commands:
       - echo "Applying Terraform configuration..."

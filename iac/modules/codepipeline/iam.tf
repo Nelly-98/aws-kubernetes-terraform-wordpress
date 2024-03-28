@@ -32,15 +32,6 @@ data "aws_iam_policy_document" "codepipeline-policy-document" {
     effect    = "Allow"
   }
 
-  # Ajout pour permettre les actions sur KMS
-  statement {
-    actions = ["kms:*"]
-    resources = [
-      "arn:aws:kms:eu-west-3:885801475464:key/cb8d0ea5-7509-4389-9f0b-52bcc63ad090",
-    ]
-    effect = "Allow"
-  }
-
   statement {
     actions = ["codepipeline:GetPipeline","codepipeline:StartPipelineExecution","codepipeline:GetPipelineState"]
     resources = ["*"]
@@ -84,7 +75,7 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
     effect    = "Allow"
   }
   statement {
-    actions   = ["ecr:*", "eks:*", "s3:*", "rds:*", "sns:*", "secretsmanager:GetSecretValue"]
+    actions   = ["ecr:*", "eks:*", "s3:*", "rds:*", "sns:*", "ec2:*", "secretsmanager:GetSecretValue"]
     resources = ["*"]
     effect    = "Allow"
   }
@@ -100,13 +91,20 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
   }
 
   statement {
-    actions   = ["codebuild:BatchGetBuilds","codebuild:BatchGetProjects","codebuild:StartBuild","codebuild:StopBuild","logs:GetLogEvents"]
+    actions   = ["codebuild:*"]
     resources = ["*"]
     effect    = "Allow"
   }
 
   statement {
-    actions = ["codepipeline:GetPipeline","codepipeline:StartPipelineExecution","codepipeline:GetPipelineState"]
+    actions = ["codepipeline:*"]
+    resources = ["*"]
+    effect = "Allow"
+  }
+
+   # Ajout pour permettre les actions sur KMS
+  statement {
+    actions = ["kms:*"]
     resources = ["*"]
     effect = "Allow"
   }
