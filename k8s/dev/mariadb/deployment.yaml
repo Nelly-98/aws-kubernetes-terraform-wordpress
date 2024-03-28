@@ -31,3 +31,10 @@ spec:
         ports:
         - containerPort: 3306
           name: mariadb
+        volumeMounts:
+        - name: mariadb-storage  
+          mountPath: /var/lib/mysql  # Le chemin où le volume sera monté dans le conteneur
+      volumes:
+      - name: mariadb-storage  
+        persistentVolumeClaim:
+          claimName: mariadb-pvc-dev # Le nom du PVC pour la base de données MariaDB

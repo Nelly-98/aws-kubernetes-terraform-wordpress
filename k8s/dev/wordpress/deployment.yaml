@@ -29,3 +29,10 @@ spec:
         ports:
         - containerPort: 80
           name: wordpress
+        volumeMounts:
+        - name: wordpress-media
+          mountPath: /var/www/html/wp-content
+      volumes:
+      - name: wordpress-media  
+        persistentVolumeClaim:
+          claimName: wordpress-pvc-dev # Le nom du PVC pour le stockage média de WordPress

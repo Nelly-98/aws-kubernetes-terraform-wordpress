@@ -27,3 +27,10 @@ spec:
           value: wordpress
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: wordpress-media
+          mountPath: /var/www/html/wp-content
+      volumes:
+      - name: wordpress-media
+        persistentVolumeClaim:
+          claimName: wordpress-pvc-prod
