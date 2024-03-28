@@ -8,7 +8,12 @@ phases:
       - unzip terraform_1.7.5_linux_amd64.zip
       - mv terraform /usr/local/bin/
       - terraform version
-      
+      - echo Install kubectl
+      - curl -o kubectl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable-1.29.txt)/bin/linux/amd64/kubectl"
+      #- curl -o kubectl https://amazon-eks.s3.us-west-3.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - mv ./kubectl /usr/local/bin
+     
   pre_build:
     commands:
       - echo "Initializing Terraform..."
@@ -35,14 +40,15 @@ phases:
     commands:
       - cd k8s/ 
       - echo "Configuring kubectl for EKS cluster..."
-      - aws eks --region eu-west-3 update-kubeconfig --name cluster-poei
+      - aws eks update-kubeconfig --name cluster-poei --region eu-west-3 
       - echo "Deploying Kubernetes manifests..."
-      - kubectl create namespace prod
+      - kubectl create namespace prod || true
       - echo "Namespace prod created succeful"
-      - kubectl apply -f prod/maradb -n prod
+      - kubectl apply -f prod/mariadb -n prod
       - kubectl apply -f prod/wordpress -n prod
       - kubectl apply -f prod/cert-manager -n prod
       - kubectl apply -f prod/ingress.yaml -n prod
       - echo "Deployment to Kubernetes completed."
+      - kubectl gets pods -n prod
       
       
