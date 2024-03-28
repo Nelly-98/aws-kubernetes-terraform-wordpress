@@ -33,9 +33,16 @@ phases:
       
   post_build:
     commands:
+      - cd k8s/ 
       - echo "Configuring kubectl for EKS cluster..."
-      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name webservicesClusterEKS
+      - aws eks --region eu-west-3 update-kubeconfig --name cluster-poei
       - echo "Deploying Kubernetes manifests..."
-      - kubectl apply -f k8s/prod/ -n prod
+      - kubectl create namespace prod
+      - echo "Namespace prod created succeful"
+      - kubectl apply -f prod/maradb -n prod
+      - kubectl apply -f prod/wordpress -n prod
+      - kubectl apply -f prod/cert-manager -n prod
+      - kubectl apply -f prod/ingress.yaml -n prod
       - echo "Deployment to Kubernetes completed."
-     
+      
+      
