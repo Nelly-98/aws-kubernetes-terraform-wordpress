@@ -40,6 +40,12 @@ data "aws_iam_policy_document" "codepipeline-policy-document" {
     ]
     effect = "Allow"
   }
+
+  statement {
+    actions = ["codepipeline:GetPipeline","codepipeline:StartPipelineExecution","codepipeline:GetPipelineState"]
+    resources = ["*"]
+    effect = "Allow"
+  }
 }
 
 resource "aws_iam_policy" "codepipeline-policy" {
@@ -91,6 +97,12 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
       "arn:aws:s3:::projet-tf-backend-state/*"
     ]
     effect = "Allow"
+  }
+
+  statement {
+    actions   = ["codebuild:BatchGetBuilds","codebuild:BatchGetProjects","codebuild:StartBuild","codebuild:StopBuild","logs:GetLogEvents"]
+    resources = ["*"]
+    effect    = "Allow"
   }
 
 }
