@@ -78,7 +78,7 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
     effect    = "Allow"
   }
   statement {
-    actions   = ["ecr:*", "eks:*", "s3:*", "rds:*", "secretsmanager:GetSecretValue"]
+    actions   = ["ecr:*", "eks:*", "s3:*", "rds:*", "sns:*", "secretsmanager:GetSecretValue"]
     resources = ["*"]
     effect    = "Allow"
   }

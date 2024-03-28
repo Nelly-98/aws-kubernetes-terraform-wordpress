@@ -127,3 +127,11 @@ module "codepipeline" {
   source       = "./modules/codepipeline"
   cluster_name = module.eks.cluster_name
 }
+
+
+module "sns" {
+  source             = "./modules/sns"
+  topic_name         = "my-notification-poei"
+  slack_webhook_url  = "https://hooks.slack.com/services/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"
+  email_address      = "nelly.guepnang@gmail.com"
+}
