@@ -55,7 +55,7 @@ module "sg" {
   description = "Security Group pour les instances RDS"
 }
 
-module "eks" {
+/*module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
   cluster_name    = "eks-poie-web1"
@@ -115,11 +115,20 @@ module "eks" {
     Environment = "dev"
     Terraform   = "true"
   }
+}*/
+
+module "eks" {
+  source = "./modules/eks"
+
+  cluster_name         = "cluster-poei"
+  subnet_ids           = module.vpc.private_subnets_ids
+  eks_cluster_role_arn = aws_iam_role.eks_cluster_role.arn
+  eks_node_role_arn    = aws_iam_role.eks_node_role.arn
 }
+
 
 module "codepipeline" {
   source       = "./modules/codepipeline"
-  cluster_name = module.eks.cluster_name
 }
 
 
