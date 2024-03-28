@@ -61,7 +61,7 @@ resource "aws_iam_role" "codepipeline-role" {
     Version = "2012-10-17",
     Statement = [
       {
-        Action = "sts:AssumeRole",
+        Action = "sts:AssumeRole", 
         Principal = {
           Service = "codepipeline.amazonaws.com"
         },
@@ -105,6 +105,11 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
     effect    = "Allow"
   }
 
+  statement {
+    actions = ["codepipeline:GetPipeline","codepipeline:StartPipelineExecution","codepipeline:GetPipelineState"]
+    resources = ["*"]
+    effect = "Allow"
+  }
 }
 
 resource "aws_iam_policy" "codebuild-policy" {
