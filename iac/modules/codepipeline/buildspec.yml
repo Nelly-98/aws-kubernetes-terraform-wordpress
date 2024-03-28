@@ -35,6 +35,10 @@ phases:
       - echo "Terraform apply complete."
       - cd ..
       - echo "Building and pushing Docker images..."
+      - cd docker/
+      - docker build -t wordpress-container .
+      - docker tag wordpress-container:latest 885801475464.dkr.ecr.eu-west-3.amazonaws.com/ecr-poei-web1-frontend:latest
+      - docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/ecr-poei-web1-frontend:latest
       
   post_build:
     commands:
@@ -49,6 +53,6 @@ phases:
       - kubectl apply -f prod/cert-manager -n prod
       - kubectl apply -f prod/ingress.yaml -n prod
       - echo "Deployment to Kubernetes completed."
-      - kubectl gets pods -n prod
+      - kubectl get pods -n prod
       
       
