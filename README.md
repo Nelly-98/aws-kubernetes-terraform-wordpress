@@ -37,11 +37,16 @@ Ce projet illustre une mise en œuvre d'une infrastructure web, orchestrée par 
 
 2. Publiez ces images dans le registre d'images Amazon ECR.
 
+   ```bash
+   aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin account-id.dkr.ecr.region.amazonaws.com
+   docker tag mon-wordpress:latest account-id.dkr.ecr.region.amazonaws.com/wordpress-container:latest
+   docker push account-id.dkr.ecr.region.amazonaws.com/wordpress-container:latest
+
 ### Deploiement dans un environement test avec Kubernetes
 
 1. Création d'un cluster kubernetes 
     ```bash
-   eksctl create cluster --name =my-cluster --region=eu-west-3 --version=1.19 --nodegroup-name =ng-test --node-type t2.large --nodes 1 
+   eksctl create cluster --name my-cluster --region my-region --version 1.19 --nodegroup-name ng-test --node-type t2.large --nodes 1 
 
 2. Création d'un namespace "dev" et deploiement des manifestes dans le namespace
    ```bash
@@ -73,6 +78,7 @@ Ce projet illustre une mise en œuvre d'une infrastructure web, orchestrée par 
 
 Chaque push sur la branche spécifiée de GitHub déclenchera automatiquement AWS CodePipeline, qui exécute les étapes configurée dans CodeBuild
 
+### Destruction des ressoures
 
 1. Pour éviter des coûts inutiles, détruisez l'infrastructure AWS déployée via Terraform quand elle n'est plus nécessaire
    ```bash
