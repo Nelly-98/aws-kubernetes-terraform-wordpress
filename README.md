@@ -57,14 +57,14 @@ Ce projet illustre une mise en œuvre d'une infrastructure web, orchestrée par 
 
 4. Après le déploiement, accédez à votre application WordPress via l'adresse IP externe fournie par le service LoadBalancer de Kubernetes.
 
-### Terraform et CodePipeline
+### Terraform
 
 1. Naviguez vers le répertoire Terraform:
-   ```bash```
+   ```bash
    cd iac/ 
 
 2. Executer les commandes suivantes :
-   ```bash```
+   ```bash
    terraform init
    terraform plan
    terraform apply
@@ -74,8 +74,7 @@ Ce projet illustre une mise en œuvre d'une infrastructure web, orchestrée par 
 Chaque push sur la branche spécifiée de GitHub déclenchera automatiquement AWS CodePipeline, qui exécute les étapes configurée dans CodeBuild
 
 
-Pour éviter des coûts inutiles, détruisez l'infrastructure AWS déployée via Terraform quand elle n'est plus nécessaire:
-
+1. Pour éviter des coûts inutiles, détruisez l'infrastructure AWS déployée via Terraform quand elle n'est plus nécessaire
    ```bash
    terraform destroy
 
