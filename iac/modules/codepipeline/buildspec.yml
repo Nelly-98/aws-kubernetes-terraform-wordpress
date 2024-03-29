@@ -39,7 +39,7 @@ phases:
       - docker build -t wordpress-container .
       - docker tag wordpress-container:latest 885801475464.dkr.ecr.eu-west-3.amazonaws.com/ecr-poei-web1-frontend:latest
       - docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/ecr-poei-web1-frontend:latest
-      
+      - cd ../
   post_build:
     commands:
       - cd k8s/ 
@@ -48,11 +48,22 @@ phases:
       - echo "Deploying Kubernetes manifests..."
       - kubectl create namespace prod || true
       - echo "Namespace prod created succeful"
+      - helm repo add jetstack https://charts.jetstack.io
+      - helm repo update
+      - helm install cert-manager jetstack/cert-manager --namespace prod --create-namespace --version v1.3.1 --set installCRDs=true
+      - echo "Install CSI Driver pour EBS for our cluster"
+      - helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+      - helm repo update
+      - helm install aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver --namespace prod --set enableVolumeScheduling=true --set enableVolumeResizing=true --set enableVolumeSnapshot=true
+      - echo "vérification that the pods of CSI Driver are in execution"
+      - kubectl get pods -n prod -l app=aws-ebs-csi-driver
       - kubectl apply -f prod/mariadb -n prod
       - kubectl apply -f prod/wordpress -n prod
       - kubectl apply -f prod/cert-manager -n prod
       - kubectl apply -f prod/ingress.yaml -n prod
       - echo "Deployment to Kubernetes completed."
       - kubectl get pods -n prod
+      - kubectl get pvc -n prod
+
       
       

@@ -1,7 +1,7 @@
-resource "aws_cloudfront_distribution" "example" {
+resource "aws_cloudfront_distribution" "cloudfront" {
   origin {
-    domain_name = var.load_balancer_dns_name
-    origin_id   = "myWordPressSite"
+    domain_name = "a8e55db9e30424041a068abdf0621e21-2086359480.eu-west-3.elb.amazonaws.com"
+    origin_id   = "myWordPressPoei"
     
     custom_origin_config {
       http_port              = 80
@@ -12,12 +12,11 @@ resource "aws_cloudfront_distribution" "example" {
   }
 
   enabled             = true
-  default_root_object = var.default_root_object
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "monOriginID"
+    target_origin_id = "myWordPressPoei" 
     forwarded_values {
       query_string = false
       cookies {

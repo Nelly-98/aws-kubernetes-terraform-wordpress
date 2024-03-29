@@ -3,7 +3,7 @@ variable "topic_name" {
   type        = string
 }
 
-variable "slack_webhook_url" {
+variable "slack_webhook_arn" {
   description = "Slack webhook URL for notifications"
   type        = string
 }

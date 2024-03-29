@@ -1,7 +1,6 @@
 output "cloudfront_distribution_id" {
-  value = aws_cloudfront_distribution.example.id
+  value = aws_cloudfront_distribution.cloudfront.id
 }
-
 output "cloudfront_distribution_domain" {
-  value = aws_cloudfront_distribution.example.domain_name
+  value = aws_cloudfront_distribution.cloudfront.domain_name
 }
