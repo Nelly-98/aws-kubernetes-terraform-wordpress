@@ -42,8 +42,8 @@ phases:
       - cd ..
   post_build:
     commands:
-      - cd k8s/ 
       - echo "Configuring kubectl for EKS cluster..."
+      - cd k8s/
       - aws eks update-kubeconfig --name cluster-poei --region eu-west-3 
       - echo "Deploying Kubernetes manifests..."
       - kubectl create namespace prod || true

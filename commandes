@@ -350,3 +350,7 @@ terraform init
 terraform validate
 terraform apply --auto-approve
 terraform apply --auto-approve
+helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+helm repo update
+helm install aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver --namespace prod --set enableVolumeScheduling=true --set enableVolumeResizing=true --set enableVolumeSnapshot=true
+kubectl get pods -n prod -l app=aws-ebs-csi-driver

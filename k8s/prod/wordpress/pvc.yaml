@@ -10,4 +10,4 @@ spec:
     requests:
       storage: 50Gi  # Plus d'espace pour la production
   storageClassName: "gp2"  # Exemple pour AWS
-  
+ 
