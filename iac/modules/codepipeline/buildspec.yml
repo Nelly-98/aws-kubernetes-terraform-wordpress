@@ -39,7 +39,7 @@ phases:
       - docker build -t wordpress-container .
       - docker tag wordpress-container:latest 885801475464.dkr.ecr.eu-west-3.amazonaws.com/ecr-poei-web1-frontend:latest
       - docker push 885801475464.dkr.ecr.eu-west-3.amazonaws.com/ecr-poei-web1-frontend:latest
-      - cd ../
+      - cd ..
   post_build:
     commands:
       - cd k8s/ 
