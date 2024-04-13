@@ -2,17 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: wordpress-ingress
-  namespace: prod
   annotations:
-    # Utilisez Let's Encrypt ou votre fournisseur de certificats
     kubernetes.io/ingress.class: "nginx"
 spec:
-  tls:
-  - hosts:
-    - wordpress.poei-storm.com
-    secretName: poei-tls-secret
   rules:
-  - host: wordpress.poei-storm.com
+  - host: wordpress.poei-shop.org
     http:
       paths:
       - pathType: Prefix
@@ -22,3 +16,4 @@ spec:
             name: wordpress
             port:
               number: 80
+

@@ -1,0 +1,7 @@
+wordpress:
+  db_host: "terraform-20240401174003573200000010.c7de9rz7w1ns.eu-west-3.rds.amazonaws.com"
+  db_user: admin
+  db_password: unMotDePasse
+  db_name: wordpress
+  image: 885801475464.dkr.ecr.eu-west-3.amazonaws.com/ecr-poei-web1-frontend:latest
+  
